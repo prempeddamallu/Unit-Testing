@@ -15,7 +15,7 @@ test-job1:
 docker-stage:
   stage: deploy
   image: 
-    name: docker:19-dind
+    name: docker:stable
   services:
    - name: docker:19-dind
      entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
