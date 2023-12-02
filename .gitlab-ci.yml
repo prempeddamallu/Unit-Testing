@@ -16,7 +16,10 @@ docker-stage:
   image: docker:24.0.7-dind-alpine3.18
   stage: deploy
   script:
-    - echo "This job tests something"
-    - docker --help
+    - echo "This job deploy docker image to dockerhub"
+    - docker login -u atulyapandey -p $DOCKER_HUB_ACCESS_TOKEN
+    - cd ./devops/
+    - docker build .
+    - docker push atulyapandey/gitlab-cicd
   tags:
     - production
