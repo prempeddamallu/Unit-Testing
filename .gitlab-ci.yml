@@ -5,7 +5,6 @@ build-job:
   tags:
     - production
 
-
 test-job1:
   stage: test
   script:
@@ -14,7 +13,7 @@ test-job1:
     - production
 
 docker-stage:
-  stage: docker
+  stage: deploy
   script:
     - echo "This job tests something"
     - docker --help
