@@ -18,15 +18,16 @@ docker-stage:
     name: docker:stable
   services:
    - name: docker:dind
-     alias: thedockerhost
-  variables:
-    DOCKER_HOST: tcp://thedockerhost:2375/
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
+     entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
+  #    alias: thedockerhost
+  # variables:
+  #   DOCKER_HOST: tcp://thedockerhost:2375/
+  #   DOCKER_DRIVER: overlay2
+  #   DOCKER_TLS_CERTDIR: ""
   script:
+    - cd ./devops/
     - echo "This job deploy docker image to dockerhub"
     - docker login -u atulyapandey -p $DOCKER_HUB_ACCESS_TOKEN
-    - cd ./devops/
     - docker build .
     - docker push atulyapandey/gitlab-cicd
   tags:
