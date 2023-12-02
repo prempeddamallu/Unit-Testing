@@ -13,15 +13,16 @@ test-job1:
     - production
 
 docker-stage:
-  image: docker:24.0.7-dind-alpine3.18
+  stage: deploy
+  image: 
+    name: docker:stable
+  services:
+   - name: docker:dind
+     alias: thedockerhost
   variables:
-    # Tell docker CLI how to talk to Docker daemon; see
-    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker-executor
     DOCKER_HOST: tcp://thedockerhost:2375/
-    # Use the overlayfs driver for improved performance:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-  stage: deploy
   script:
     - echo "This job deploy docker image to dockerhub"
     - docker login -u atulyapandey -p $DOCKER_HUB_ACCESS_TOKEN
