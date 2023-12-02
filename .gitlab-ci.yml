@@ -12,3 +12,11 @@ test-job1:
     - echo "This job tests something"
   tags:
     - production
+
+docker-stage:
+  stage: docker
+  script:
+    - echo "This job tests something"
+    - docker --help
+  tags:
+    - production
