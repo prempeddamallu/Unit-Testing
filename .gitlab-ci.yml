@@ -12,14 +12,14 @@ build-job:
   script:
     - echo "Hello, Atulya!"
   tags:
-    - production
+    # - production
 
 test-job1:
   stage: test
   script:
     - echo "This job tests something"
   tags:
-    - production
+    # - production
 
 docker-stage:
   stage: deploy
@@ -37,4 +37,4 @@ docker-stage:
     - docker build -t gitlab-cicd:latest .
     # - docker push atulyapandey/gitlab-cicd
   tags:
-    - production
+    # - production
