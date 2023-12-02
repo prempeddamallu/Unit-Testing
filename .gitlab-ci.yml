@@ -28,7 +28,7 @@ docker-stage:
     - cd ./devops/
     - echo "This job deploy docker image to dockerhub"
     - docker login -u atulyapandey -p $DOCKER_HUB_ACCESS_TOKEN
-    - docker build .
+    - docker build Dockerfile
     - docker push atulyapandey/gitlab-cicd
   tags:
     - production
