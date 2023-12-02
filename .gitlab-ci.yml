@@ -15,10 +15,10 @@ test-job1:
 docker-stage:
   stage: deploy
   image: 
-    name: docker:stable
-  services:
-   - name: docker:dind
-     entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
+    name: docker:19-dind
+  # services:
+  #  - name: docker:dind
+  #    entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
   #    alias: thedockerhost
   # variables:
   #   DOCKER_HOST: tcp://thedockerhost:2375/
