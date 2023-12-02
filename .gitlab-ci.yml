@@ -13,8 +13,8 @@ test-job1:
     - production
 
 docker-stage:
-  stage: deploy
   image: docker:24.0.7-dind-alpine3.18
+  stage: deploy
   script:
     - echo "This job tests something"
     - docker --help
