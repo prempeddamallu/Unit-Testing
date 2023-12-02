@@ -14,6 +14,7 @@ test-job1:
 
 docker-stage:
   stage: deploy
+  image: docker:24.0.7-dind-alpine3.18
   script:
     - echo "This job tests something"
     - docker --help
