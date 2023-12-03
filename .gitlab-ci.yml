@@ -1,7 +1,7 @@
 
 image: docker:stable
 
-stages:
+stage:
   - build
   - test
 
