@@ -15,9 +15,9 @@ build-job:
     - python setup.py sdist
   tags:
     - production
-  artifacts:
-    paths:
-      - devops/dist/
+  # artifacts:
+  #   paths:
+  #     - devops/dist/
 
 
 test-job1:
