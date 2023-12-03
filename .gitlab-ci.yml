@@ -2,8 +2,8 @@
 image: docker:stable
 
 stages:
-  - build
   - test
+  - build
   - deploy
 
 build-job:
@@ -15,15 +15,18 @@ build-job:
     - python setup.py sdist
   tags:
     - production
-  # artifacts:
-  #   paths:
-  #     - devops/dist/
+  artifacts:
+    paths:
+      - devops/dist/
 
 
 test-job1:
   stage: test
   script:
-    - echo "This job tests something"
+    - echo "Linting code"
+    - pip install pylint pycodestyle
+    - pylint .
+    - pycodestyle --show-source --show-pep8 devops/dg-atulya-pkg/*
   tags:
     - production
 
