@@ -17,7 +17,7 @@ build-job:
     - production
   artifacts:
     paths:
-      - dist/
+      - devops/dist/
 
 
 test-job1:
