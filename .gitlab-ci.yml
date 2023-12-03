@@ -26,8 +26,8 @@ test-job1:
   script:
     - echo "Linting code"
     - pip install pylint pycodestyle
-    - pylint devops/dg-atulya-pkg/
-    - pycodestyle --show-source --show-pep8 devops/dg-atulya-pkg/*
+    - pylint devops/dg_atulya_pkg/
+    - pycodestyle --show-source --show-pep8 devops/dg_atulya_pkg/*
   tags:
     - production
 
