@@ -21,6 +21,7 @@ build-job:
 
 
 test-job1:
+  image: python:alpine
   stage: test
   script:
     - echo "Linting code"
