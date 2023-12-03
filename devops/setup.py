@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='dg-atulya-pkg',
+    name='dg_atulya_pkg',
     version='0.0.1',
     author='Atulya Kumar Pandey',
     author_email='atul3015@gmail.com',
