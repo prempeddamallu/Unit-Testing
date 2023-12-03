@@ -28,6 +28,7 @@ test-job1:
     - production
 
 docker-stage:
+  image: python:alpine
   stage: deploy
   # services:
   #  - name: docker:19-dind
