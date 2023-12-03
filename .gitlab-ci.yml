@@ -1,25 +1,29 @@
 
 image: docker:stable
 
-
-# variables:
-#   DOCKER_HOST: tcp://localhost:2375/
-#   DOCKER_DRIVER: overlay2
-#   DOCKER_TLS_CERTDIR: ""
+stages:
+  - build
+  - test
 
 build-job:
   stage: build
   script:
-    - echo "Hello, Atulya!"
+    - echo "Building application..."
+    - cd ./devops/
+    - python setup.py sdist
   tags:
-    # - production
+    - production
+  artifacts:
+    paths:
+      - dist/
+
 
 test-job1:
   stage: test
   script:
     - echo "This job tests something"
   tags:
-    # - production
+    - production
 
 docker-stage:
   stage: deploy
@@ -33,8 +37,10 @@ docker-stage:
   # #   DOCKER_TLS_CERTDIR: ""
   script:
     - cd ./devops/
-    - echo "This job deploy docker image to dockerhub"
-    - docker build -t gitlab-cicd:latest .
+    - pip install -U twine
+    - twine upload dist/* --username $PYPI_USER --password $PYPI_PASSWORDD
+    # - echo "This job deploy docker image to dockerhub"
+    # - docker build -t gitlab-cicd:latest .
     # - docker push atulyapandey/gitlab-cicd
   tags:
-    # - production
+    - production
