@@ -1,31 +1,33 @@
-import boto3
-import pytest
-from moto import mock_s3
-from botocore.exceptions import ParamValidationError
-from src.boto3_example import S3Example
+import unittest 
+from moto import mock_aws 
+import boto3 
 
+def func_to_test(bucket_name, key, content): 
+    s3 = boto3.resource("s3") 
+    object = s3.Object(bucket_name, key) 
+    object.put(Body=content) 
 
-@mock_s3
-def test_my_model_save():
-    conn = boto3.resource('s3', region_name='us-east-1')
-    # We need to create the bucket since this is all in Moto's 'virtual' AWS account
-    conn.create_bucket(Bucket='mybucket')
+class MyTest(unittest.TestCase): 
+    bucket_name = "test-bucket" 
+    def setUp(self): 
+        self.mock_aws = mock_aws() 
+        self.mock_aws.start() 
+        # you can use boto3.client("s3") if you prefer 
+        s3 = boto3.resource("s3") 
+        bucket = s3.Bucket(self.bucket_name) 
+        bucket.create() 
 
-    model_instance = S3Example('mybucket', 'steve', 'is awesome')
-    model_instance.save()
+    def tearDown(self): 
+        self.mock_aws.stop() 
 
-    body = conn.Object('mybucket', 'steve').get()['Body'].read().decode("utf-8")
+    def test(self): 
+        content = b"abc" 
+        key = "/path/to/obj" 
+        # run the file which uploads to S3 
+        func_to_test(self.bucket_name, key, content) 
+        # check the file was uploaded as expected 
 
-    assert body == 'is awesome'
-
-
-@mock_s3
-def test_s3_save_failure():
-    conn = boto3.resource('s3', region_name='us-east-1')
-
-    with pytest.raises(ParamValidationError):
-        # We need to create the bucket since this is all in Moto's 'virtual' AWS account
-        conn.create_bucket(Bucket='mybucket')
-
-        model_instance = S3Example('mybucket/', 'steve', 'is awesome') # Intentionally passing invalid bucket name so that boto3 raises an error
-        model_instance.save()
+        s3 = boto3.resource("s3") 
+        object = s3.Object(self.bucket_name, key) 
+        actual = object.get()["Body"].read() 
+        self.assertEqual(actual, content) 

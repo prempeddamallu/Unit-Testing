@@ -1,26 +1,59 @@
 import boto3
-from moto import mock_dynamodb2
 from src.boto3_example import DynamodBExample
+from moto import mock_aws
+from botocore.exceptions import ClientError
 
-
-@mock_dynamodb2
+@mock_aws
 def test_create_dynamo_table():
-    '''
-        Implement the test logic here for testing create_dynamo_table method
-    '''
-    assert False
+    # Arrange
+    dynamo_example = DynamodBExample()
 
+    # Act``
+    dynamo_example.create_movies_table()
 
-@mock_dynamodb2
+    # Assert
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('Movies')
+    assert table.table_status == 'ACTIVE'
+
+@mock_aws
 def test_add_dynamo_record_table():
-    '''
-        Implement the test logic here for testing add_dynamo_record_table method
-    '''
-    assert False
+    # Arrange
+    dynamo_example = DynamodBExample()
+    dynamo_example.create_movies_table()
 
-@mock_dynamodb2
+    # Sample item to insert
+    item = {
+        'year': 2024,
+        'title': 'Test Movie',
+        'info': {'plot': 'Nothing happens at all.'}
+    }
+
+    # Act
+    dynamo_example.add_dynamo_record('Movies', item)
+
+    # Assert
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('Movies')
+    response = table.get_item(Key={'year': 2024, 'title': 'Test Movie'})
+    assert 'Item' in response
+    assert response['Item']['title'] == 'Test Movie'
+    assert response['Item']['year'] == 2024
+
+@mock_aws
 def test_add_dynamo_record_table_failure():
-    '''
-        Implement the test logic here test_add_dynamo_record_table method for failures
-    '''
-    assert False
+    # Arrange
+    dynamo_example = DynamodBExample()
+
+    # Act & Assert
+    try:
+        # Try to add a record to a non-existent table
+        item = {
+            'year': 2024,
+            'title': 'Test Movie',
+            'info': {'plot': 'Nothing happens at all.'}
+        }
+        dynamo_example.add_dynamo_record('NonExistentTable', item)
+    except ClientError as e:
+        assert e.response['Error']['Code'] == 'ResourceNotFoundException'
+
